@@ -4647,7 +4647,7 @@
     "type": "app",
     "version": "0.01",
     "description": "Love panda",
-    "icon": "panda.png",
+    "icon": "app.png",
     "tags": "tool",
     "supports": ["BANGLEJS"],
     "allow_emulator": true,
