@@ -4645,7 +4645,7 @@
     "id": "panda",
     "name": "Panda",
     "type": "app",
-    "version": "0.01",
+    "version": "0.02",
     "description": "Love panda",
     "icon": "app.png",
     "tags": "tool",
