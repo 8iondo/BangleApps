@@ -4640,5 +4640,20 @@
       {"name":"pebble.app.js","url":"pebble.app.js"},
       {"name":"pebble.img","url":"pebble.icon.js","evaluate":true}
     ]
+  },
+  {
+    "id": "panda",
+    "name": "Panda",
+    "type": "app",
+    "version": "0.01",
+    "description": "Love panda",
+    "icon": "panda.img",
+    "tags": "tool",
+    "supports": ["BANGLEJS"],
+    "allow_emulator": true,
+    "storage": [
+      {"name":"panda.app.js","url":"app.js"},
+      {"name":"panda.img","url":"app-icon.js","evaluate":true}
+    ]
   }
 ]
