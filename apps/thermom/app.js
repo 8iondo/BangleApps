@@ -1,5 +1,5 @@
 var min = 9999;
-var max = 0;
+var max = -9999;
 
 function onTemperature(p) {
   g.reset(1).clearRect(0,24,g.getWidth(),g.getHeight());
