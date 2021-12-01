@@ -27,7 +27,7 @@ function drawTemperature() {
 setInterval(function() {
   drawTemperature();
 }, 20000);
-drawTemperature();
 E.showMessage("Loading...");
+drawTemperature();
 Bangle.loadWidgets();
 Bangle.drawWidgets();
