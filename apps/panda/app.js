@@ -1,3 +1,5 @@
+Bangle.setLCDPower(1);
+Bangle.setLCDTimeout(0);
 greal = g;
 g.clear();
 g = Graphics.createArrayBuffer(120,64,1,{msb:true});
