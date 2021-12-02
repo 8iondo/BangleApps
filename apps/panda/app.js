@@ -66,6 +66,10 @@ function roll() {
   g.clear();
   g.drawImage(IMG.rex[i % IMG.rex.length], 5, 0, {scale: 7});
   g.flip();
+  if (i == 200) {
+    i = 0;
+  }
+
   setTimeout(roll, Math.max(60, 600 - (i * 5)));
 }
 
