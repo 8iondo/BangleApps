@@ -2,8 +2,8 @@
   function settings() {
     const fileName = "thermom.settings.json";
     let settings = require('Storage').readJSON(fileName, true) || {};
-    if (settings.blink===undefined) settings.blink=".";
-    if (settings.rsefresh===undefined) settings.refresh=60;
+    if (settings.blink===undefined) settings.blink = 3;
+    if (settings.rsefresh===undefined) settings.refresh = 60;
     return settings;
   }
   function updateSetting(setting, value) {
@@ -12,7 +12,6 @@
     require('Storage').writeJSON(fileName, settings);
   }
 
-  var vibPatterns = ["Off", ".", "-", "--", "-.-", "---"];
   var mainmenu = {
     "" : { "title" : "Thermom" },
     "< Back" : back,
@@ -22,12 +21,12 @@
       format: v => v+"s",
       onchange: v => updateSetting("repeat", v)
     },
-    'Blink at scan': {
-      value: Math.max(0,vibPatterns.indexOf(settings().blink)),
-      min: 0, max: vibPatterns.length,
-      format: v => vibPatterns[v]||"Off",
+    'Blink at scan for': {
+      value: settings().blink,
+      min: 0, max: 5,
+      format: v => v+"s",
       onchange: v => {
-        updateSetting("vibrate", vibPatterns[v]);
+        updateSetting("vibrate", v);
       }
     },
     
