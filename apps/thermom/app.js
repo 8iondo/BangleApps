@@ -4,7 +4,7 @@ const scans = [];
 
 const uc = require('Storage').readJSON('thermom.settings.json', true) || {};
 const conf = {
-  refresh: uc.refresh == undefined ? 30000 : uc.refresh,
+  refresh: uc.refresh == undefined ? 30000 : uc.refresh * 1000,
   blink: uc.blink == undefined ? 3000 : uc.blink
 };
 if (conf.blink == '.') {

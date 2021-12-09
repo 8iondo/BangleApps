@@ -3,7 +3,7 @@
     const fileName = "thermom.settings.json";
     let settings = require('Storage').readJSON(fileName, true) || {};
     if (settings.blink===undefined) settings.blink=".";
-    if (settings.rsefresh===undefined) settings.refresh=4;
+    if (settings.rsefresh===undefined) settings.refresh=60;
     return settings;
   }
   function updateSetting(setting, value) {
@@ -18,7 +18,7 @@
     "< Back" : back,
     'Scan each': {
       value: settings().refresh,
-      min: 2, max: 60000,
+      min: 5, max: 1800,
       format: v => v+"s",
       onchange: v => updateSetting("repeat", v)
     },
