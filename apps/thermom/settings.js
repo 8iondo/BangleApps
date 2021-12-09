@@ -21,7 +21,7 @@
       format: v => v+"s",
       onchange: v => updateSetting("repeat", v)
     },
-    'Blink at scan for': {
+    'LCD on for': {
       value: settings().blink,
       min: 0, max: 5,
       format: v => v+"s",

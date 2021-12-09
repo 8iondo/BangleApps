@@ -3924,7 +3924,8 @@
       {"name":"thermom.app.js","url":"app.js"},
       {"name":"thermom.settings.js","url":"settings.js"},
       {"name":"thermom.img","url":"app-icon.js","evaluate":true}
-    ]
+    ],
+    "data": [{"name":"thermom.settings.json"}]
   },
   {
     "id": "mysticdock",
