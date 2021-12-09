@@ -2,12 +2,14 @@ var min = 9999;
 var max = -9999;
 const scans = [];
 
+const uc = require('Storage').readJSON('thermom.settings.json', true) || {};
 const conf = {
-  time: {
-    refresh: 60000,
-    blink: 3000
-  }
+  refresh: uc.refresh == undefined ? 30000 : uc.refresh,
+  blink: uc.blink == undefined ? 3000 : uc.blink
 };
+if (conf.blink == '.') {
+  conf.blink = 3000;
+}
 
 const grHeight = 120;
 const grBottom = g.getHeight();
@@ -21,10 +23,10 @@ function onTemperature(p) {
   min = Math.min(min, temp);
 
   g.reset(1).clearRect(0, 24, g.getWidth(), g.getHeight());
-  g.setFont("6x8", 2).setFontAlign(0, 0);
+  g.setFont('6x8', 2).setFontAlign(0, 0);
   var x = g.getWidth() / 2;
   var y = 90;
-  g.drawString("Min " + min + " Max " + max, x, y - 45);
+  g.drawString('Min ' + min + ' Max ' + max, x, y - 45);
   g.setFontVector(70).setFontAlign(0, 0);
   g.drawString(temp, x, y);
   g.setFontVector(15).setFontAlign(1, 1, 1);
@@ -36,9 +38,8 @@ function onTemperature(p) {
   }
 
   g.reset(1).clearRect(0, grTop, grWidth, grBottom);
-  
   g.setColor(0.36, 0.36, 0.36);
-  g.setFont("6x8", 1);
+  g.setFont('6x8', 1);
   drawGuides();
 
   g.setColor(255, 255, 255);
@@ -48,11 +49,11 @@ function onTemperature(p) {
     // g.drawString(t, index * 20, pos );
   });
 
-  if (conf.time.blink > 0 && !Bangle.isLCDOn()) {
+  if (conf.blink > 0 && !Bangle.isLCDOn()) {
     Bangle.setLCDPower(true);
     setTimeout(function() {
       Bangle.setLCDPower(false);
-    }, conf.time.blink);
+    }, conf.blink);
   }
 
 }
@@ -60,7 +61,7 @@ function onTemperature(p) {
 function drawGuides() {
   var guideTemp = Math.floor(min + 1);
   while (guideTemp < max) {
-    yline = fromTempToY(guideTemp);
+    const yline = fromTempToY(guideTemp);
     g.fillRect(1, yline, grWidth, yline + 1);
     g.drawString(guideTemp, grWidth - 20, yline - 9);
     guideTemp++;
@@ -87,8 +88,8 @@ function fromTempToY(t) {
 
 setInterval(function() {
   drawTemperature();
-}, conf.time.refresh);
-E.showMessage("Loading...");
+}, conf.refresh);
+E.showMessage('Loading...');
 drawTemperature();
 Bangle.loadWidgets();
 Bangle.drawWidgets();

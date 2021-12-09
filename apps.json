@@ -3922,6 +3922,7 @@
     "allow_emulator": true,
     "storage": [
       {"name":"thermom.app.js","url":"app.js"},
+      {"name":"thermom.settings.js","url":"settings.js"},
       {"name":"thermom.img","url":"app-icon.js","evaluate":true}
     ]
   },
