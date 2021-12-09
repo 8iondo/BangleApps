@@ -3,7 +3,7 @@
     const fileName = "thermom.settings.json";
     let settings = require('Storage').readJSON(fileName, true) || {};
     if (settings.blink===undefined) settings.blink = 3;
-    if (settings.rsefresh===undefined) settings.refresh = 60;
+    if (settings.refresh===undefined) settings.refresh = 60;
     return settings;
   }
   function updateSetting(setting, value) {
@@ -19,14 +19,14 @@
       value: settings().refresh,
       min: 5, max: 1800,
       format: v => v+"s",
-      onchange: v => updateSetting("repeat", v)
+      onchange: v => updateSetting("refresh", v)
     },
     'LCD on for': {
       value: settings().blink,
       min: 0, max: 5,
       format: v => v+"s",
       onchange: v => {
-        updateSetting("vibrate", v);
+        updateSetting("blink", v);
       }
     },
     
