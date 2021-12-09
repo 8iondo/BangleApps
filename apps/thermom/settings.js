@@ -1,15 +1,15 @@
 (function(back) {
+  const FILENAME = "thermom.settings.json";
   function settings() {
-    const fileName = "thermom.settings.json";
-    let settings = require('Storage').readJSON(fileName, true) || {};
+    let settings = require('Storage').readJSON(FILENAME, true) || {};
     if (settings.blink===undefined) settings.blink = 3;
     if (settings.refresh===undefined) settings.refresh = 60;
     return settings;
   }
   function updateSetting(setting, value) {
-    let settings = require('Storage').readJSON(fileName, true) || {};
+    let settings = require('Storage').readJSON(FILENAME, true) || {};
     settings[setting] = value;
-    require('Storage').writeJSON(fileName, settings);
+    require('Storage').writeJSON(FILENAME, settings);
   }
 
   var mainmenu = {
