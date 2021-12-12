@@ -1,23 +1,32 @@
 var min = 9999;
 var max = -9999;
-const scans = [];
+var scans = [];
 
 const uc = require('Storage').readJSON('thermom.settings.json', true) || {};
 const conf = {
   refresh: uc.refresh == undefined ? 60000 : uc.refresh * 1000,
-  blink: uc.blink == undefined ? 3000 : uc.blink
+  blink: uc.blink == undefined ? 3000 : uc.blink * 1000,
+  mediumReduce: true
 };
 
 const grHeight = 120;
 const grBottom = g.getHeight();
 const grTop = grBottom - grHeight;
 const grWidth = g.getWidth();
+var zoom = 1;
+var scansCount = 0;
 
 function onTemperature(p) {
   const temp = isNaN(p.temperature.toFixed(1)) ? Math.floor(Math.random() * 6) + 15 : p.temperature.toFixed(1);
-  scans.push(temp);
   max = Math.max(max, temp);
   min = Math.min(min, temp);
+  if (zoom < 2 || scansCount % zoom == 0) {
+    scans.push(temp);
+  } else {
+    var prev = scans[scans.length - 1];
+    scans[scans.length - 1] = parseFloat(((zoom + 1) * prev) / (zoom + 1)).toFixed(1);
+  }
+  scansCount++;
 
   g.reset(1).clearRect(0, 24, g.getWidth(), g.getHeight());
   g.setFont('6x8', 2).setFontAlign(0, 0);
@@ -28,10 +37,22 @@ function onTemperature(p) {
   g.drawString(temp, x, y);
   g.setFontVector(15).setFontAlign(1, 1, 1);
 
-  const itemwidth = Math.max(5, Math.min(15, grWidth / scans.length));
-  if (itemwidth == 5) {
+  let itemwidth = getItemWidth();
+  if (itemwidth == 6) {
+    zoom++;
     // max array size
-    scans.splice(0, 1);
+    if (conf.mediumReduce) {
+      var reduced = [];
+      for (i = 0; i < scans.length; i = i + 2) {
+        reduced.push((i < scans.length - 1) ? parseFloat(scans[i] + scans[i + 1] / 2).toFixed(1) : scans[i]);
+      }
+      scansCount = scans.length - reduced.length;
+      scans = reduced;
+      reduced = [];
+      itemwidth = getItemWidth();
+    } else {
+      scans.splice(0, 1);
+    }
   }
 
   g.reset(1).clearRect(0, grTop, grWidth, grBottom);
@@ -43,7 +64,6 @@ function onTemperature(p) {
   scans.forEach((t, index) => {
     pos = fromTempToY(t);
     g.fillRect(index * itemwidth, pos, (index * itemwidth) + itemwidth - 2, grBottom);
-    // g.drawString(t, index * 20, pos );
   });
 
   if (conf.blink > 0 && !Bangle.isLCDOn()) {
@@ -53,6 +73,10 @@ function onTemperature(p) {
     }, conf.blink);
   }
 
+}
+
+function getItemWidth() {
+  return Math.max(6, Math.min(25, grWidth / scans.length));
 }
 
 function drawGuides() {
@@ -78,7 +102,7 @@ function drawTemperature() {
 function fromTempToY(t) {
   const offset = (max - min < 2) ? 2 : 0.2;
   const grMin = min - offset;
-  const grMax = (max - min < 1) ? max + offset : max;  
+  const grMax = (max - min < 1) ? max + offset : max;
   const valRatio = (t - grMin) / (grMax - grMin);
   return grBottom - Math.floor(valRatio * grHeight);
 }
@@ -90,3 +114,5 @@ E.showMessage('Loading...');
 drawTemperature();
 Bangle.loadWidgets();
 Bangle.drawWidgets();
+
+setWatch(drawTemperature, BTN1, {edge:"rising", debounce:50, repeat:true});
